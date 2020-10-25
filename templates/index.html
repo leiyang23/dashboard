@@ -6,25 +6,126 @@
     <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
     <style>
+       html, body{
+           padding: 0;
+           margin: 0;
+           background: url(http://official-website.small3d.com/bg.jpg) no-repeat;
+           background-size:100% 100%;
+           height:100%;
+           color: white;
+       }
+       .app{
+           width: 100%;
+           height: 100%;
+       }
+
+       .head{
+           margin-bottom: 80px;
+           background: url(http://official-website.small3d.com/head.png) no-repeat;
+           background-size: 100% 100px;
+           height: 100px;
+           text-align: center;
+           line-height: 100px;
+           font-size: 28px;
+           letter-spacing: 1.05rem;
+           font-weight: 600;
+       }
+
+       .con{
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: center;
+       }
+
+       .chart{
+           display: flex;
+           flex-direction: row;
+           align-content: space-around;
+           height: 100%;
+       }
+       .chart .left{
+           display: flex;
+           flex-direction: column;
+       }
+
+       #money{
+            text-align: center;
+            height: 100px;
+            line-height: 100px;
+       }
+
+       .chart .right{
+            display: flex;
+           flex-direction: column;
+           justify-content: space-between;
+       }
+
+       .money{
+            display: flex;
+           flex-direction: column;
+       }
+       .money .title{
+           font-size: 20px;
+           font-weight: 600;
+           margin-bottom: 10px;
+       }
+
         #money{
-            font-size: 30px;
+            margin-left: 150px;
+            width: 60%;
+            border: 1px solid rgb(43, 167, 255);
+            font-size: 60px;
+            letter-spacing: 5px;
+            font-weight: 500;
         }
+
     </style>
 </head>
 <body>
-    <div id="money" class="money">666888</div>
-    <div id="bar-shop" style="width:1000px; height:600px;"></div>
-    <div id="bar-goods" style="width:1000px; height:600px;"></div>
-    <div id="pie-city" style="width:1000px; height:600px;"></div>
+<div class="app">
+    <!--head-->
+    <div class="head">
+        小马良双十一实时数据大屏
+    </div>
 
-    <!-- 滚动数字 -->
-    <script>
+    <div class="con"> 
+        <div class="chart">    
+
+            <!--left-->
+            <div class="left">
+                <div class="money" style="height:  300px;">
+                    <div class="title">销售额</div>
+                    <div id="money" class="money">666888</div>
+                </div>
+                <div class="city">
+                    <div id="pie-city" style="width:800px; height:300px;"></div>
+                </div>
+            </div>
+
+            <!--right-->
+            <div class="right">
+                <div class="shop">
+                    <div id="bar-shop" style="width:800px; height:300px;"></div>
+                </div>
+                <div class="goods">
+                    <div id="bar-goods" style="width: 800px; height:300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 滚动数字 -->
+<script>
     var CountUp=function(target,startVal,endVal,decimals,duration,options){var self=this;self.version=function(){return"1.9.2"};self.options={useEasing:true,useGrouping:true,separator:",",decimal:".",easingFn:easeOutExpo,formattingFn:formatNumber,prefix:"",suffix:"",numerals:[]};if(options&&typeof options==="object"){for(var key in self.options){if(options.hasOwnProperty(key)&&options[key]!==null){self.options[key]=options[key]}}}if(self.options.separator===""){self.options.useGrouping=false}else{self.options.separator=""+self.options.separator}var lastTime=0;var vendors=["webkit","moz","ms","o"];for(var x=0;x<vendors.length&&!window.requestAnimationFrame;++x){window.requestAnimationFrame=window[vendors[x]+"RequestAnimationFrame"];window.cancelAnimationFrame=window[vendors[x]+"CancelAnimationFrame"]||window[vendors[x]+"CancelRequestAnimationFrame"]}if(!window.requestAnimationFrame){window.requestAnimationFrame=function(callback,element){var currTime=new Date().getTime();var timeToCall=Math.max(0,16-(currTime-lastTime));var id=window.setTimeout(function(){callback(currTime+timeToCall)},timeToCall);lastTime=currTime+timeToCall;return id}}if(!window.cancelAnimationFrame){window.cancelAnimationFrame=function(id){clearTimeout(id)}}function formatNumber(num){num=num.toFixed(self.decimals);num+="";var x,x1,x2,x3,i,l;x=num.split(".");x1=x[0];x2=x.length>1?self.options.decimal+x[1]:"";if(self.options.useGrouping){x3="";for(i=0,l=x1.length;i<l;++i){if(i!==0&&((i%3)===0)){x3=self.options.separator+x3}x3=x1[l-i-1]+x3}x1=x3}if(self.options.numerals.length){x1=x1.replace(/[0-9]/g,function(w){return self.options.numerals[+w]});x2=x2.replace(/[0-9]/g,function(w){return self.options.numerals[+w]})}return self.options.prefix+x1+x2+self.options.suffix}function easeOutExpo(t,b,c,d){return c*(-Math.pow(2,-10*t/d)+1)*1024/1023+b}function ensureNumber(n){return(typeof n==="number"&&!isNaN(n))}self.initialize=function(){if(self.initialized){return true}self.error="";self.d=(typeof target==="string")?document.getElementById(target):target;if(!self.d){self.error="[CountUp] target is null or undefined";return false}self.startVal=Number(startVal);self.endVal=Number(endVal);if(ensureNumber(self.startVal)&&ensureNumber(self.endVal)){self.decimals=Math.max(0,decimals||0);self.dec=Math.pow(10,self.decimals);self.duration=Number(duration)*1000||2000;self.countDown=(self.startVal>self.endVal);self.frameVal=self.startVal;self.initialized=true;return true}else{self.error="[CountUp] startVal ("+startVal+") or endVal ("+endVal+") is not a number";return false}};self.printValue=function(value){var result=self.options.formattingFn(value);if(self.d.tagName==="INPUT"){this.d.value=result}else{if(self.d.tagName==="text"||self.d.tagName==="tspan"){this.d.textContent=result}else{this.d.innerHTML=result}}};self.count=function(timestamp){if(!self.startTime){self.startTime=timestamp}self.timestamp=timestamp;var progress=timestamp-self.startTime;self.remaining=self.duration-progress;if(self.options.useEasing){if(self.countDown){self.frameVal=self.startVal-self.options.easingFn(progress,0,self.startVal-self.endVal,self.duration)}else{self.frameVal=self.options.easingFn(progress,self.startVal,self.endVal-self.startVal,self.duration)}}else{if(self.countDown){self.frameVal=self.startVal-((self.startVal-self.endVal)*(progress/self.duration))}else{self.frameVal=self.startVal+(self.endVal-self.startVal)*(progress/self.duration)}}if(self.countDown){self.frameVal=(self.frameVal<self.endVal)?self.endVal:self.frameVal}else{self.frameVal=(self.frameVal>self.endVal)?self.endVal:self.frameVal}self.frameVal=Math.round(self.frameVal*self.dec)/self.dec;self.printValue(self.frameVal);if(progress<self.duration){self.rAF=requestAnimationFrame(self.count)}else{if(self.callback){self.callback()}}};self.start=function(callback){if(!self.initialize()){return}self.callback=callback;self.rAF=requestAnimationFrame(self.count)};self.pauseResume=function(){if(!self.paused){self.paused=true;cancelAnimationFrame(self.rAF)}else{self.paused=false;delete self.startTime;self.duration=self.remaining;self.startVal=self.frameVal;requestAnimationFrame(self.count)}};self.reset=function(){self.paused=false;delete self.startTime;self.initialized=false;if(self.initialize()){cancelAnimationFrame(self.rAF);self.printValue(self.startVal)}};self.update=function(newEndVal){if(!self.initialize()){return}newEndVal=Number(newEndVal);if(!ensureNumber(newEndVal)){self.error="[CountUp] update() - new endVal is not a number: "+newEndVal;return}self.error="";if(newEndVal===self.frameVal){return}cancelAnimationFrame(self.rAF);self.paused=false;delete self.startTime;self.startVal=self.frameVal;self.endVal=newEndVal;self.countDown=(self.startVal>self.endVal);self.rAF=requestAnimationFrame(self.count)};if(self.initialize()){self.printValue(self.startVal)}};
         var options = {
             useEasing: true,
             useGrouping: true,
             separator: ',',
-            decimal: '.'
+            decimal: '.',
+            prefix: "0000"
         };
      ///////////////////////////////////////////////////
      // target ： 目标元素的id
@@ -47,10 +148,11 @@
      ///////////////////////////////////////////////////
     var money = new CountUp('money', 0, 666, 0, 3, options);
     money.start();
-    </script>
 
-    <!-- 图表 -->
-    <script>
+</script>
+
+<!-- 图表 -->
+<script>
         var bar_shop_chart = echarts.init(document.getElementById('bar-shop'), 'white', {renderer: 'canvas'});
         var bar_goods_chart = echarts.init(document.getElementById('bar-goods'), 'white', {renderer: 'canvas'});
         var pie_city_chart = echarts.init(document.getElementById('pie-city'), 'white', {renderer: 'canvas'});
@@ -69,7 +171,7 @@
                 url: "http://127.0.0.1:5000/data",
                 dataType: 'json',
                 success: function (result) {
-                    console.log(result)
+                    // console.log(result)
                     bar_shop_chart.setOption(result.shop);
                     bar_goods_chart.setOption(result.goods);
                     pie_city_chart.setOption(result.city);
@@ -77,6 +179,22 @@
                 }
             });
         }
-    </script>
+
+</script>
 </body>
+<script>
+    window.onload = function(){
+        console.log(99999)
+        window.addEventListener('resize', function () {
+                pageHeight = document.body.clientHeight;
+                console.log(String(pageHeight - 180) + "px");
+
+                document.getElementsByClassName("con")[0].style.height = String(pageHeight - 400) + "px";
+                document.getElementsByClassName("app")[0].style.height = String(pageHeight) + "px";
+
+            });
+    }
+    
+</script>
 </html>
+
